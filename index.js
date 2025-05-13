@@ -31,11 +31,22 @@ function generateBord(size){
     parentDiv.style.gridTemplateRows = `repeat(${size}, 1fr)`
     parentDiv.style.gridTemplateColumns = `repeat(${size}, 1fr)`
 
-    for(let i =0;i< (size * size);i++){
+    let j = 0
+    let k =1
+
+    for(let i =1;i<= (size * size);i++){
         const newBord = document.createElement('div')
         newBord.classList.add('box');
         newBord.id = (`${i}`)
         parentDiv.appendChild(newBord);
+        j++
+
+        if(j > size){
+            j = 1
+            k++ 
+        }
+        newBord.classList.add(`row-${k}`)
+        newBord.classList.add(`col-${j}`)
     }
 
     function randomPlace(){
@@ -58,31 +69,61 @@ function startGame(size) {
 
   parentDiv.addEventListener('click', function boxClicked(event) {
     let targetBox = document.getElementById(`${event.target.id}`);
-    let numIndex = Number(event.target.id);
+    let numIndex = event.target.classList;
+    const rowClass  = numIndex[1]
+    const colClass  = numIndex[2]
+    let numRow = Number(rowClass.split('-')[1]); 
+    let numCol = Number(colClass.split('-')[1]);
 
-    const openBox = [
-      [numIndex - 1 - size, numIndex - size, numIndex + 1 - size],
-      [numIndex - 1, numIndex, numIndex + 1],
-      [numIndex + size - 1, numIndex + size, numIndex + size + 1]
-    ];
-    if (!(targetBox.classList.contains('red'))) {
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          let boxId = openBox[i][j];
-          console.log([boxId])
-        if (
-            boxId > 0 &&
-            boxId <= size * size &&
-            (boxId % 10 != 9) &&
-            (boxId % 10 != 0)){
-                let secTargetBox = document.getElementById(`${boxId}`);
-                if (secTargetBox && !(secTargetBox.classList.contains('red'))) {
-                    secTargetBox.style.backgroundColor = 'blue';
-                }
-            }
-        }
-      }
+    clickBox()
+    if (
+      targetBox.style.backgroundColor === 'blue' ||
+      targetBox.classList.contains('red')
+    ) {
+      return;
     }
+    function clickBox(){
+        if(!targetBox.classList.contains('red')){
+            targetBox.style.backgroundColor ='blue'
+            for(let i = -1;i<=1;i++){
+                for(let j = -1;j<=1;j++){
+                    const newRow = numRow + i;
+                    const newCol = numCol + j;
+                    if(newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size){
+                        const neighborBox  = document.querySelector(`.row-${newRow}.col-${newCol}`)
+                        if(neighborBox && !neighborBox.classList.contains('red')){
+                            neighborBox.style.backgroundColor ='blue'
+                            revealNeighbor(newRow,newCol)
+                        }
+                    }
+                    
+                } 
+            }
+    
+        }else{
+            console.log('game over')
+        }
+    }
+    function revealNeighbor(row,col){
+        const neighborBox2  = document.querySelector(`.row-${row}.col-${col}`)
+        for(let i = -1;i<=0;i++){
+                for(let j = -1;j<=0;j++){
+                    const newRow1 = row + i;
+                    const newCol1 = col + j;
+
+                    if(newRow1 >= 1 && newCol1 >= 1 && newRow1 <= size && newCol1 <= size){
+                        let neighborBox3  = document.querySelector(`.row-${newRow1}.col-${newCol1}`)
+                        if(neighborBox3 && !neighborBox3.classList.contains('red')){
+                            neighborBox3.style.backgroundColor ='blue'
+                            revealNeighbor(newRow1,newCol1)
+                        }
+                    }
+                    
+                } 
+        }
+
+    }
+
   });
 }
 //-------------------------------------------------------------
