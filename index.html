@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Mine</title>
+</head>
+<body>
+    <main class="main">
+        <div class="menu">
+            <label >Dificulatea</label>
+            <select onchange="onDificultyChange(event.target.value)" name="dificulatea" id="dificul">
+                <option value="" disabled selected>Select your option</option>
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </div>
+        <div class="container" id="con">
+        </div>
+    </main>
+    <script src="index.js"></script>
+</body>
+</html>
