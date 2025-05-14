@@ -83,6 +83,9 @@ function startGame(size) {
       return;
     }
     function clickBox(){
+
+        var bombsFound = 0
+
         if(!targetBox.classList.contains('red')){
             targetBox.style.backgroundColor ='blue'
             for(let i = -1;i<=1;i++){
@@ -93,34 +96,46 @@ function startGame(size) {
                         const neighborBox  = document.querySelector(`.row-${newRow}.col-${newCol}`)
                         if(neighborBox && !neighborBox.classList.contains('red')){
                             neighborBox.style.backgroundColor ='blue'
+                            
+                        }else if(neighborBox.classList.contains('red')) {
+                            bombsFound++              
+                        }
+                        if(bombsFound > 0 ){
+
+                            for(let k = -1;k<=1;k++){
+                                for(let l = -1;l<=1;l++){
+                                    const newRow2 = numRow + k;
+                                    const newCol2 = numCol + l;
+                                    if(newRow2 >= 1 && newCol2 >= 1 && newRow2 <= size && newCol2 <= size){
+                                        const neighborBox2  = document.querySelector(`.row-${newRow2}.col-${newCol2}`)
+                                        if(neighborBox2 && !neighborBox2.classList.contains('red')){
+                                            neighborBox2.innerHTML = bombsFound
+                                        }
+                                    }
+                                }
+                            }
+                            targetBox.innerHTML = bombsFound
+                            
+                        }else{
                             revealNeighbor(newRow,newCol)
                         }
                     }
                     
                 } 
             }
-    
+
         }else{
-            console.log('game over')
+
+            let allBombs = document.querySelectorAll('.red')
+
+            for(let i = 0;i<allBombs.length;i++){
+                allBombs[i].style.backgroundColor = 'red'
+            }
+            alert('Game Over')
         }
     }
     function revealNeighbor(row,col){
-        const neighborBox2  = document.querySelector(`.row-${row}.col-${col}`)
-        for(let i = -1;i<=0;i++){
-                for(let j = -1;j<=0;j++){
-                    const newRow1 = row + i;
-                    const newCol1 = col + j;
-
-                    if(newRow1 >= 1 && newCol1 >= 1 && newRow1 <= size && newCol1 <= size){
-                        let neighborBox3  = document.querySelector(`.row-${newRow1}.col-${newCol1}`)
-                        if(neighborBox3 && !neighborBox3.classList.contains('red')){
-                            neighborBox3.style.backgroundColor ='blue'
-                            revealNeighbor(newRow1,newCol1)
-                        }
-                    }
-                    
-                } 
-        }
+        
 
     }
 
