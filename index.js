@@ -84,15 +84,16 @@ function startGame(size) {
     }
     function clickBox(){
 
-        var bombsFound = 0
+        let bombsFound = 0
 
         if(!targetBox.classList.contains('red')){
             targetBox.style.backgroundColor ='blue'
             for(let i = -1;i<=1;i++){
-                for(let j = -1;j<=1;j++){
+                for(let j = -1;j<=1;j++){  
                     const newRow = numRow + i;
                     const newCol = numCol + j;
                     if(newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size){
+                        console.log(newRow,newCol)
                         const neighborBox  = document.querySelector(`.row-${newRow}.col-${newCol}`)
                         if(neighborBox && !neighborBox.classList.contains('red')){
                             neighborBox.style.backgroundColor ='blue'
@@ -100,46 +101,44 @@ function startGame(size) {
                         }else if(neighborBox.classList.contains('red')) {
                             bombsFound++              
                         }
-                        if(bombsFound > 0 ){
-
-                            for(let k = -1;k<=1;k++){
-                                for(let l = -1;l<=1;l++){
-                                    const newRow2 = numRow + k;
-                                    const newCol2 = numCol + l;
-                                    if(newRow2 >= 1 && newCol2 >= 1 && newRow2 <= size && newCol2 <= size){
-                                        const neighborBox2  = document.querySelector(`.row-${newRow2}.col-${newCol2}`)
-                                        if(neighborBox2 && !neighborBox2.classList.contains('red')){
-                                            neighborBox2.innerHTML = bombsFound
-                                        }
-                                    }
-                                }
-                            }
-                            targetBox.innerHTML = bombsFound
-                            
-                        }else{
-                            revealNeighbor(newRow,newCol)
-                        }
                     }
-                    
                 } 
+            }
+            if(bombsFound > 0 ){
+                targetBox.style.backgroundColor ='blue'
+            }else{
+                revealNeighbor(numRow,numcol)
             }
 
         }else{
-
+            
             let allBombs = document.querySelectorAll('.red')
-
+            
             for(let i = 0;i<allBombs.length;i++){
                 allBombs[i].style.backgroundColor = 'red'
             }
             alert('Game Over')
         }
     }
+    //-------------------------------------------------------------
     function revealNeighbor(row,col){
-        
 
+        for(let k = -1;k<=1;k++){
+            for(let l = -1;l<=1;l++){
+                const newRow2 = row + k;
+                const newCol2 = col + l;
+                console.log(newRow2,newCol2)
+                console.log(row,col)
+                if(newRow2 >= 1 && newCol2 >= 1 && newRow2 <= size && newCol2 <= size){
+                    const neighborBox2  = document.querySelector(`.row-${newRow2}.col-${newCol2}`)
+                    if(neighborBox2 && !neighborBox2.classList.contains('red')){
+                        neighborBox2.innerHTML = bombsFound
+                    }
+                }
+            }
+        }   
     }
-
-  });
+});
 }
 //-------------------------------------------------------------
 function pseudoRandom(seed) {
