@@ -75,14 +75,14 @@ function startGame(size) {
     let numRow = Number(rowClass.split('-')[1]); 
     let numCol = Number(colClass.split('-')[1]);
 
-    clickBox()
+    clickBox(numRow,numCol,targetBox,size)
     if (
       targetBox.style.backgroundColor === 'blue' ||
       targetBox.classList.contains('red')
     ) {
       return;
     }
-    function clickBox(){
+    function clickBox(numRow,numCol,targetBox,size){
 
         let bombsFound = 0
 
@@ -93,10 +93,11 @@ function startGame(size) {
                     const newRow = numRow + i;
                     const newCol = numCol + j;
                     if(newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size){
-                        console.log(newRow,newCol)
+                        
                         const neighborBox  = document.querySelector(`.row-${newRow}.col-${newCol}`)
                         if(neighborBox && !neighborBox.classList.contains('red')){
                             neighborBox.style.backgroundColor ='blue'
+                            clickBox()
                             
                         }else if(neighborBox.classList.contains('red')) {
                             bombsFound++              
@@ -107,9 +108,9 @@ function startGame(size) {
             if(bombsFound > 0 ){
                 targetBox.style.backgroundColor ='blue'
             }else{
-                revealNeighbor(numRow,numcol)
-            }
 
+                clickBox(newCol,newRow,targetBox,size)
+            }
         }else{
             
             let allBombs = document.querySelectorAll('.red')
@@ -121,23 +122,6 @@ function startGame(size) {
         }
     }
     //-------------------------------------------------------------
-    function revealNeighbor(row,col){
-
-        for(let k = -1;k<=1;k++){
-            for(let l = -1;l<=1;l++){
-                const newRow2 = row + k;
-                const newCol2 = col + l;
-                console.log(newRow2,newCol2)
-                console.log(row,col)
-                if(newRow2 >= 1 && newCol2 >= 1 && newRow2 <= size && newCol2 <= size){
-                    const neighborBox2  = document.querySelector(`.row-${newRow2}.col-${newCol2}`)
-                    if(neighborBox2 && !neighborBox2.classList.contains('red')){
-                        neighborBox2.innerHTML = bombsFound
-                    }
-                }
-            }
-        }   
-    }
 });
 }
 //-------------------------------------------------------------
