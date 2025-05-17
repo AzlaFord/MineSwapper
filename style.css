@@ -17,12 +17,58 @@
 }
 
 .main{
-    display: flex;
+    display: inline;
     width: 100%;
-    height: 500px;
+    height: 30rem;
+    justify-content: flex-start;
+    align-items: center;
 }
 body{
     display: flex;
     width: 100%;
     height: 100%;
+}
+.center{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.menu{
+    border-style: solid;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60rem;
+    height: 20%;
+    background-color: lightblue;
+}
+#dificul{
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+    height: 100%;
+    background-color: lightblue;
+}
+
+.restartButton{
+    display: flex;
+    flex-direction: row;
+    width: 10%;
+    height: 100%;
+    background-color: rgb(255, 0, 0);
+    align-content: center;
+    text-align: center;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }

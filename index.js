@@ -15,18 +15,17 @@ function onDificultyChange(dificulatatea){
         }
 }
 //-------------------------------------------------------------
-function hideMenu(){
+// function hideMenu(){
 
-    const menu = document.getElementsByClassName("menu")
+//     const menu = document.getElementsByClassName("menu")
     
-    for(let i=0;i<menu.length;i++){
-        menu[i].style.display ='none'
-    }
-}
+//     for(let i=0;i<menu.length;i++){
+//         menu[i].style.display ='none'
+//     }
+// }
 //-------------------------------------------------------------
 function generateBord(size){
     
-    hideMenu()
     const parentDiv = document.getElementById('con')
 
     parentDiv.style.gridTemplateRows = `repeat(${size}, 1fr)`
@@ -139,26 +138,19 @@ function startGame(size) {
             for (let i = 0; i < allBombs.length; i++) {
                 allBombs[i].style.backgroundColor = 'red';
             }
-
-            for(let i=0;i<menu.length;i++){
-                menu[i].style.display ='flex'
-            }
         return;
     }
     }
     //-------------------------------------------------------------
 });
 }
-
+function restartGameBut() {
+    restartGame()
+    onDificultyChange(document.getElementById('dificul').value)
+}
 function restartGame() {
-
     const parentDiv = document.getElementById('con');
     parentDiv.innerHTML = '';
-    const menu = document.getElementsByClassName("menu");
-    
-    for(let i=0;i<menu.length;i++){
-        menu[i].style.display ='flex'
-    }
 }
 //-------------------------------------------------------------
 function pseudoRandom(seed) {
