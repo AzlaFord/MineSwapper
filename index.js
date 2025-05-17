@@ -1,4 +1,5 @@
 function onDificultyChange(dificulatatea){
+    restartGame()
     switch (dificulatatea) {
         case "Easy":        
             generateBord(10)
@@ -54,7 +55,6 @@ function generateBord(size){
         for (let i = 0; i < size *1.2; i++) {
             seed = pseudoRandom(seed);
             let n = randomInt(0,(size * size), seed);
-            console.log(n);
         let targetBox = document.getElementById(`${n}`)
         targetBox.classList.add('red');
     }}
@@ -65,7 +65,9 @@ function generateBord(size){
 }
 //-------------------------------------------------------------
 function startGame(size) {
+  const menu = document.getElementsByClassName("menu")  
   const parentDiv = document.getElementById('con');
+  let countBlue = 0;
 
   parentDiv.addEventListener('click', function boxClicked(event) {
     let targetBox = document.getElementById(`${event.target.id}`);
@@ -74,55 +76,89 @@ function startGame(size) {
     const colClass  = numIndex[2]
     let numRow = Number(rowClass.split('-')[1]); 
     let numCol = Number(colClass.split('-')[1]);
+    
+    let allBombs = document.querySelectorAll('.red');
 
-    clickBox(numRow,numCol,targetBox,size)
-    if (
-      targetBox.style.backgroundColor === 'blue' ||
-      targetBox.classList.contains('red')
-    ) {
-      return;
+    if (targetBox.classList.contains('red')) {
+            for (let i = 0; i < allBombs.length; i++) {
+                allBombs[i].style.backgroundColor = 'red';
+            }
+
+            for(let i=0;i<menu.length;i++){
+                menu[i].style.display ='flex'
+            }
+
+            return;
+    }else{
+        clickBox(numRow,numCol,targetBox,size)
     }
-    function clickBox(numRow,numCol,targetBox,size){
+    //-------------------------------------------------------------
+    function clickBox(numRow, numCol, targetBox, size) {
+        
+        if (targetBox.style.backgroundColor === 'blue') {
+            return;
+        }
 
-        let bombsFound = 0
+        let bombsFound = 0;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                if (i === 0 && j === 0) continue;
+                const newRow = numRow + i;
+                const newCol = numCol + j;
+                if (newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size) {
+                    const neighborBox = document.querySelector(`.row-${newRow}.col-${newCol}`);
+                    if (neighborBox && neighborBox.classList.contains('red')) {
+                        bombsFound++;
+                    }
+                }
+            }
+        }
+        
+        targetBox.style.backgroundColor = 'blue';
+        countBlue++;
 
-        if(!targetBox.classList.contains('red')){
-            targetBox.style.backgroundColor ='blue'
-            for(let i = -1;i<=1;i++){
-                for(let j = -1;j<=1;j++){  
+        if (bombsFound === 0) {
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) continue;
                     const newRow = numRow + i;
                     const newCol = numCol + j;
-                    if(newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size){
-                        
-                        const neighborBox  = document.querySelector(`.row-${newRow}.col-${newCol}`)
-                        if(neighborBox && !neighborBox.classList.contains('red')){
-                            neighborBox.style.backgroundColor ='blue'
-                            clickBox()
-                            
-                        }else if(neighborBox.classList.contains('red')) {
-                            bombsFound++              
+                    if (newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size) {
+                        const neighborBox = document.querySelector(`.row-${newRow}.col-${newCol}`);
+                        if (neighborBox && neighborBox.style.backgroundColor !== 'blue' && !neighborBox.classList.contains('red')) {
+                            clickBox(newRow, newCol, neighborBox, size);
                         }
                     }
-                } 
+                }
             }
-            if(bombsFound > 0 ){
-                targetBox.style.backgroundColor ='blue'
-            }else{
-
-                clickBox(newCol,newRow,targetBox,size)
-            }
-        }else{
+        } else {
+            targetBox.textContent = bombsFound;
             
-            let allBombs = document.querySelectorAll('.red')
-            
-            for(let i = 0;i<allBombs.length;i++){
-                allBombs[i].style.backgroundColor = 'red'
-            }
-            alert('Game Over')
         }
+        if (countBlue === (size * size) - (size * 1.2)) {
+            for (let i = 0; i < allBombs.length; i++) {
+                allBombs[i].style.backgroundColor = 'red';
+            }
+
+            for(let i=0;i<menu.length;i++){
+                menu[i].style.display ='flex'
+            }
+        return;
+    }
     }
     //-------------------------------------------------------------
 });
+}
+
+function restartGame() {
+
+    const parentDiv = document.getElementById('con');
+    parentDiv.innerHTML = '';
+    const menu = document.getElementsByClassName("menu");
+    
+    for(let i=0;i<menu.length;i++){
+        menu[i].style.display ='flex'
+    }
 }
 //-------------------------------------------------------------
 function pseudoRandom(seed) {
