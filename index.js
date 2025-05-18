@@ -8,14 +8,14 @@ function onDificultyChange(dificulatatea){
         case "Easy":
                     
             generateBord(10)
-            parentDiv.style.marginLeft = '24%'
+            parentDiv.style.marginLeft = '22.5%'
             break;
         case "Medium":
-            parentDiv.style.marginLeft = '17%'
+            parentDiv.style.marginLeft = '13%'
             generateBord(20)       
             break;
         case "Hard":
-            parentDiv.style.marginLeft = '10%'
+            parentDiv.style.marginLeft = '5%'
             generateBord(30)
             break;        
         default:
@@ -23,15 +23,6 @@ function onDificultyChange(dificulatatea){
     }
     dificulatatea = null
 }
-//-------------------------------------------------------------
-// function hideMenu(){
-
-//     const menu = document.getElementsByClassName("menu")
-    
-//     for(let i=0;i<menu.length;i++){
-//         menu[i].style.display ='none'
-//     }
-// }
 //-------------------------------------------------------------
 function generateBord(size){
 
@@ -76,20 +67,19 @@ function startGame(size) {
   const parentDiv = document.getElementById('con');
   let countBlue = 0;
   
-  parentDiv.addEventListener('wheel',function(event){
-      let targetBox = document.getElementById(`${event.target.id}`);
-      if(targetBox.style.backgroundColor == 'blue'){
-        return
-      }else{
-        targetBox.style.backgroundColor = 'green';
-      }
-      parentDiv.addEventListener('click',function(event){
-        let targetBox = document.getElementById(`${event.target.id}`);
-        if(targetBox.style.backgroundColor == 'green'){
-            targetBox.style.backgroundColor = 'bisque';
-        }
-      })
-})
+  parentDiv.addEventListener('contextmenu', function(event) {
+  event.preventDefault() 
+
+  const targetBox = document.getElementById(`${event.target.id}`);
+
+  if (targetBox.style.backgroundColor === 'lightgrey') {
+    return;
+ }
+
+  if (targetBox.innerHTML !== '🚩') {
+    targetBox.innerHTML = '🚩';
+  }
+    });
 //-------------------------------------------------------------
   
   parentDiv.addEventListener('click', function boxClicked(event) {
@@ -117,7 +107,7 @@ function startGame(size) {
     //-------------------------------------------------------------
     function clickBox(numRow, numCol, targetBox, size) {
         
-        if (targetBox.style.backgroundColor === 'blue') {
+        if (targetBox.style.backgroundColor === 'lightgrey') {
             return;
         }
         
@@ -137,10 +127,10 @@ function startGame(size) {
                 }
             }
         }
-        if(targetBox.style.backgroundColor == 'green'){
-            targetBox.style.backgroundColor = 'bisque';
+        if(targetBox.innerHTML === '🚩'){
+            targetBox.innerHTML = ''
         }else{
-            targetBox.style.backgroundColor = 'blue';
+            targetBox.style.backgroundColor = 'lightgrey';
         }
         
         countBlue++;
@@ -153,14 +143,30 @@ function startGame(size) {
                     const newCol = numCol + j;
                     if (newRow >= 1 && newCol >= 1 && newRow <= size && newCol <= size) {
                         const neighborBox = document.querySelector(`.row-${newRow}.col-${newCol}`);
-                        if (neighborBox && neighborBox.style.backgroundColor !== 'blue' && !neighborBox.classList.contains('red')) {
+                        if (neighborBox && neighborBox.style.backgroundColor !== 'lightgrey' && !neighborBox.classList.contains('red')) {
                             clickBox(newRow, newCol, neighborBox, size);
                             
                         }
                     }
                 }
             }
-        } else if(targetBox.style.backgroundColor = 'blue') {
+        } else if(targetBox.style.backgroundColor = 'lightgrey') {
+            switch (bombsFound) {
+                case 1:
+                    targetBox.style.color = 'red';     
+                    break;
+                case 2:
+                    targetBox.style.color = 'blue'; 
+                    break;
+                case 3:
+                    targetBox.style.color = 'green'; 
+                    break;
+                case 4:
+                    targetBox.style.color = 'yellow'; 
+                    break;        
+                default:
+                    break;
+    }
             targetBox.textContent = bombsFound;
         }
 
