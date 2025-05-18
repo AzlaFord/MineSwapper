@@ -49,7 +49,7 @@ function generateBord(size){
 
     function randomPlace(){
         var seed = Date.now();
-        for (let i = 0; i < size *1.2; i++) {
+        for (let i = 0; i < size *1.4; i++) {
             seed = pseudoRandom(seed);
             let n = randomInt(0,(size * size), seed);
         let targetBox = document.getElementById(`${n}`)
@@ -170,7 +170,7 @@ function startGame(size) {
             targetBox.textContent = bombsFound;
         }
 
-        if (countBlue === (size * size) - (size * 1.2)) {
+        if (countBlue === (size * size) - (size * 1.4)) {
             for (let i = 0; i < allBombs.length; i++) {
                 allBombs[i].style.backgroundColor = 'red';
             }
