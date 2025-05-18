@@ -8,17 +8,19 @@
 </head>
 <body>
     <main class="main">
-        <div class="menu">
-            <label >Dificulatea</label>
-            <select onchange="onDificultyChange(event.target.value)" name="dificulatea" id="dificul">
-                <option value="" disabled selected>Select your option</option>
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-            </select>
-            <button class="restartButton" onclick="restartGameBut()">Restart</button>
-        </div>
-        <div class="container" id="con">
+        <div class="contner">
+            <div class="menu">
+                <label >Dificulatea</label>
+                <select onchange="onDificultyChange(event.target.value)" name="dificulatea" id="dificul">
+                    <option value="" disabled selected>Select your option</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <button class="restartButton" onclick="restartGameBut()">Restart</button>
+            </div>
+            <div class="cond"></div>
+            <div class="container" id="con"></div>
         </div>
     </main>
     <script src="index.js"></script>

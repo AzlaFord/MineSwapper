@@ -1,4 +1,6 @@
 let currentSize
+const parentDiv = document.getElementById('con')
+const condwin = document.getElementsByClassName('cond')
 function onDificultyChange(dificulatatea){
     
     restartGame()
@@ -6,14 +8,14 @@ function onDificultyChange(dificulatatea){
         case "Easy":
                     
             generateBord(10)
-            console.log('Easy'+dificulatatea)
+            parentDiv.style.marginLeft = '24%'
             break;
         case "Medium":
-            console.log('medium'+dificulatatea)
+            parentDiv.style.marginLeft = '17%'
             generateBord(20)       
             break;
         case "Hard":
-            console.log('Hard'+dificulatatea)
+            parentDiv.style.marginLeft = '10%'
             generateBord(30)
             break;        
         default:
@@ -32,8 +34,6 @@ function onDificultyChange(dificulatatea){
 // }
 //-------------------------------------------------------------
 function generateBord(size){
-    
-    const parentDiv = document.getElementById('con')
 
     parentDiv.style.gridTemplateRows = `repeat(${size}, 1fr)`
     parentDiv.style.gridTemplateColumns = `repeat(${size}, 1fr)`
@@ -69,11 +69,21 @@ function generateBord(size){
     startGame(size)
     size = null
 }
+
 //-------------------------------------------------------------
 function startGame(size) {
   currentSize = size
   const parentDiv = document.getElementById('con');
   let countBlue = 0;
+  
+  parentDiv.addEventListener('wheel',function(event){
+      let targetBox = document.getElementById(`${event.target.id}`);
+      if(targetBox.style.backgroundColor == 'bisque'){
+          targetBox.style.backgroundColor = 'green';
+          countBlue++;
+      }
+})
+
 
   parentDiv.addEventListener('click', function boxClicked(event) {
     let targetBox = document.getElementById(`${event.target.id}`);
@@ -85,12 +95,17 @@ function startGame(size) {
     
     let allBombs = document.querySelectorAll('.red');
 
+
+
+
     if (targetBox.classList.contains('red')) {
             for (let i = 0; i < allBombs.length; i++) {
                 allBombs[i].style.backgroundColor = 'red';
             }
             size = null
             parentDiv.removeEventListener('click', boxClicked);
+            condwin[0].style.display = 'flex'
+            condwin[0].innerHTML = 'You lose!'
             return;
     }else{
         clickBox(numRow,numCol,targetBox,currentSize)
@@ -148,6 +163,8 @@ function startGame(size) {
             }
             size = null
             parentDiv.removeEventListener('click', boxClicked)
+            condwin[0].style.display = 'flex'
+            condwin[0].innerHTML = 'You win!'
         return;
         }
         size = null
@@ -156,12 +173,11 @@ function startGame(size) {
 });
 }
 function restartGameBut() {
-
     restartGame()
     onDificultyChange(document.getElementById('dificul').value)
 }
 function restartGame() {
-
+    condwin[0].style.display = 'none'
     const parentDiv = document.getElementById('con');
     parentDiv.innerHTML = '';
     
