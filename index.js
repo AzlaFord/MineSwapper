@@ -78,13 +78,20 @@ function startGame(size) {
   
   parentDiv.addEventListener('wheel',function(event){
       let targetBox = document.getElementById(`${event.target.id}`);
-      if(targetBox.style.backgroundColor == 'bisque'){
-          targetBox.style.backgroundColor = 'green';
-          countBlue++;
+      if(targetBox.style.backgroundColor == 'blue'){
+        return
+      }else{
+        targetBox.style.backgroundColor = 'green';
       }
+      parentDiv.addEventListener('click',function(event){
+        let targetBox = document.getElementById(`${event.target.id}`);
+        if(targetBox.style.backgroundColor == 'green'){
+            targetBox.style.backgroundColor = 'bisque';
+        }
+      })
 })
-
-
+//-------------------------------------------------------------
+  
   parentDiv.addEventListener('click', function boxClicked(event) {
     let targetBox = document.getElementById(`${event.target.id}`);
     let numIndex = event.target.classList;
@@ -94,10 +101,7 @@ function startGame(size) {
     let numCol = Number(colClass.split('-')[1]);
     
     let allBombs = document.querySelectorAll('.red');
-
-
-
-
+    
     if (targetBox.classList.contains('red')) {
             for (let i = 0; i < allBombs.length; i++) {
                 allBombs[i].style.backgroundColor = 'red';
@@ -133,10 +137,14 @@ function startGame(size) {
                 }
             }
         }
+        if(targetBox.style.backgroundColor == 'green'){
+            targetBox.style.backgroundColor = 'bisque';
+        }else{
+            targetBox.style.backgroundColor = 'blue';
+        }
         
-        targetBox.style.backgroundColor = 'blue';
         countBlue++;
-
+        
         if (bombsFound === 0) {
             for (let i = -1; i <= 1; i++) {
                 for (let j = -1; j <= 1; j++) {
@@ -152,9 +160,8 @@ function startGame(size) {
                     }
                 }
             }
-        } else {
+        } else if(targetBox.style.backgroundColor = 'blue') {
             targetBox.textContent = bombsFound;
-            
         }
 
         if (countBlue === (size * size) - (size * 1.2)) {
